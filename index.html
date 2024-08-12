@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroTrip 2024</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        h1, h2 {
+            color: #ff69b4;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        form, .rating-item {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4b0082;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 2px solid #ff69b4;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #ff69b4;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff1493;
+        }
+        #ratingsList {
+            margin-top: 30px;
+        }
+        .rating-category {
+            margin-bottom: 15px;
+        }
+        #ratingsChart {
+            margin-top: 30px;
+            height: 400px;
+        }
+        .photo-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+        #peakPitSuggestions {
+            background-color: #e6e6fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 EuroTrip 2024 🇪🇺</h1>
+    <form id="ratingForm">
+        <label for="name">Who are you?</label>
+        <select id="name" name="name" required>
+            <option value="">Choose your name</option>
+            <option value="Alyssa">Alyssa</option>
+            <option value="Arielle">Arielle</option>
+            <option value="Genesis">Genesis</option>
+            <option value="Christin">Christin</option>
+            <option value="Danny">Danny</option>
+            <option value="Michael">Michael</option>
+            <option value="Karen">Karen</option>
+            <option value="Jackie">Jackie</option>
+            <option value="Maureen">Maureen</option>
+        </select>
+
+        <label for="day">Day of Trip:</label>
+        <select id="day" name="day" required>
+            <option value="">Select day</option>
+            <option value="9/9">9/9 - Travel Day (NY to Paris)</option>
+            <option value="9/10">9/10 - Arrive in Paris</option>
+            <option value="9/11">9/11 - Full Day in Paris</option>
+            <option value="9/12">9/12 - Paris to London</option>
+            <option value="9/13">9/13 - Full Day in London</option>
+            <option value="9/14">9/14 - London to Portsmouth</option>
+            <option value="9/15">9/15 - At Sea</option>
+            <option value="9/16">9/16 - Amsterdam</option>
+            <option value="9/17">9/17 - Amsterdam</option>
+            <option value="9/18">9/18 - Belgium</option>
+            <option value="9/19">9/19 - Flight Home</option>
+        </select>
+
+        <h3>Rate Your Day:</h3>
+        <div class="rating-category">
+            <label for="ratingFood">Food & Drinks 🍔🍹:</label>
+            <select id="ratingFood" name="ratingFood" required>
+                <option value="5">5 - Michelin Star Worthy!</option>
+                <option value="4">4 - Delicious!</option>
+                <option value="3">3 - Pretty Good</option>
+                <option value="2">2 - Meh...</option>
+                <option value="1">1 - I miss home cooking</option>
+            </select>
+        </div>
+        <div class="rating-category">
+            <label for="ratingActivities">Activities & Adventures 🏄‍♂️🥾:</label>
+            <select id="ratingActivities" name="ratingActivities" required>
+                <option value="5">5 - Best Day Ever!</option>
+                <option value="4">4 - Super Fun!</option>
+                <option value="3">3 - Enjoyable</option>
+                <option value="2">2 - A Bit Boring</option>
+                <option value="1">1 - I'd rather watch paint dry</option>
+            </select>
+        </div>
+        <div class="rating-category">
+            <label for="ratingAccommodation">Accommodation 🏨🛏️:</label>
+            <select id="ratingAccommodation" name="ratingAccommodation" required>
+                <option value="5">5 - Luxury Paradise!</option>
+                <option value="4">4 - Very Comfy</option>
+                <option value="3">3 - Decent</option>
+                <option value="2">2 - Needs Improvement</option>
+                <option value="1">1 - I've slept better in tents</option>
+            </select>
+        </div>
+        <div class="rating-category">
+            <label for="ratingWeather">Weather ☀️🌧️:</label>
+            <select id="ratingWeather" name="ratingWeather" required>
+                <option value="5">5 - Perfect Paradise</option>
+                <option value="4">4 - Lovely Day</option>
+                <option value="3">3 - Can't Complain</option>
+                <option value="2">2 - A Bit Gloomy</option>
+                <option value="1">1 - Mother Nature's Fury</option>
+            </select>
+        </div>
+
+        <label for="peak">Peak of the Day 🏔️:</label>
+        <textarea id="peak" name="peak" rows="3"></textarea>
+
+        <label for="pit">Pit of the Day 🕳️:</label>
+        <textarea id="pit" name="pit" rows="3"></textarea>
+
+        <label for="comments">Any Other Thoughts? 💭:</label>
+        <textarea id="comments" name="comments" rows="4"></textarea>
+
+        <label for="photo">Photo of the Day 📸:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+        <div class="photo-placeholder">Photo will appear here</div>
+
+        <button type="submit">Save My Day! 🎉</button>
+    </form>
+
+    <div id="peakPitSuggestions">
+        <h3>Need inspiration? Try these:</h3>
+        <p><strong>Peak ideas:</strong> Saw the Eiffel Tower, Tried escargot, Rode the London Eye, Made a new friend in Amsterdam</p>
+        <p><strong>Pit ideas:</strong> Got lost on the Metro, Missed the train to London, Seasickness on the boat, Stepped in a canal in Amsterdam</p>
+    </div>
+
+    <h2>Our EuroTrip Ratings So Far</h2>
+    <div id="ratingsList"></div>
+
+    <h2>Our EuroTrip Vibes Chart</h2>
+    <canvas id="ratingsChart"></canvas>
+
+    <script>
+        const form = document.getElementById('ratingForm');
+        const ratingsList = document.getElementById('ratingsList');
+        let ratings = JSON.parse(localStorage.getItem('euroTripRatings')) || [];
+
+        const personColors = {
+            'Alyssa': '#800080',  // Purple
+            'Arielle': '#FFB6C1', // Light Pink
+            'Genesis': '#45B7D1',
+            'Christin': '#FFA07A',
+            'Danny': '#98D8C8',
+            'Michael': '#F9D56E',
+            'Karen': '#FF8C94',
+            'Jackie': '#9B59B6',
+            'Maureen': '#3498DB'
+        };
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const ratingFood = parseInt(document.getElementById('ratingFood').value);
+            const ratingActivities = parseInt(document.getElementById('ratingActivities').value);
+            const ratingAccommodation = parseInt(document.getElementById('ratingAccommodation').value);
+            const ratingWeather = parseInt(document.getElementById('ratingWeather').value);
+            const ratingOverall = Math.round((ratingFood + ratingActivities + ratingAccommodation + ratingWeather) / 4);
+
+            const ratingItem = {
+                name: document.getElementById('name').value,
+                day: document.getElementById('day').value,
+                ratingOverall: ratingOverall,
+                ratingFood: ratingFood,
+                ratingActivities: ratingActivities,
+                ratingAccommodation: ratingAccommodation,
+                ratingWeather: ratingWeather,
+                peak: document.getElementById('peak').value,
+                pit: document.getElementById('pit').value,
+                comments: document.getElementById('comments').value,
+                photo: document.querySelector('.photo-placeholder').style.backgroundImage
+            };
+            ratings.push(ratingItem);
+            localStorage.setItem('euroTripRatings', JSON.stringify(ratings));
+            displayRatings();
+            updateChart();
+            form.reset();
+            document.querySelector('.photo-placeholder').style.backgroundImage = '';
+            document.querySelector('.photo-placeholder').textContent = 'Photo will appear here';
+        });
+
+        function displayRatings() {
+            ratingsList.innerHTML = '';
+            ratings.sort((a, b) => new Date(b.day) - new Date(a.day));  // Sort by most recent day first
+            ratings.forEach(item => {
+                const div = document.createElement('div');
+                div.classList.add('rating-item');
+                div.style.borderLeft = `5px solid ${personColors[item.name]}`;
+                div.innerHTML = `
+                    <h3>${item.day} - ${item.name}</h3>
+                    <p>Overall Rating: ${item.ratingOverall}/5 ⭐</p>
+                    <p>Food & Drinks: ${item.ratingFood}/5 🍔</p>
+                    <p>Activities & Adventures: ${item.ratingActivities}/5 🏄‍♂️</p>
+                    <p>Accommodation: ${item.ratingAccommodation}/5 🏨</p>
+                    <p>Weather: ${item.ratingWeather}/5 ☀️</p>
+                    <p>Peak: ${item.peak}</p>
+                    <p>Pit: ${item.pit}</p>
+                    <p>Comments: ${item.comments}</p>
+                    <div class="photo-placeholder" style="${item.photo}"></div>
+                `;
+                ratingsList.appendChild(div);
+            });
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('ratingsChart').getContext('2d');
+            const chartData = {
+                labels: ratings.map(r => r.day),
+                datasets: Object.keys(personColors).map(name => ({
+                    label: name,
+                    data: ratings.filter(r => r.name === name).map(r => r.ratingOverall),
+                    backgroundColor: personColors[name],
+                    borderColor: personColors[name],
+                    borderWidth: 1
+                }))
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            title: {
+                                display: true,
+                                text: 'Rating'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Overall Ratings by Person and Day'
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const placeholder = document.querySelector('.photo-placeholder');
+                    placeholder.style.backgroundImage = `url(${e.target.result})`;
+                    placeholder.style.backgroundSize = 'cover';
+                    placeholder.style.backgroundPosition = 'center';
+                    placeholder.textContent = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Initial display
+        displayRatings();
+        updateChart();
+    </script>
+</body>
+</html>
